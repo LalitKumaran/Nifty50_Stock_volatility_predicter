@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width+device-width, initial-scale-1.0">
+        <title>STOCKS</title>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+</head>
+<body>
+<div id="chartContainer" style="justify-content:center;height: 400px; width: 100%;"></div>
+<script type="text/javascript">
+window.onload = function () {
+  var dataPoints = [];
+  
+  var stockChart = new CanvasJS.StockChart("chartContainer",{
+    title: {
+        text: "CODE"
+      },
+    charts: [{      
+      data: [{        
+        type: "area", //Change it to "spline", "area", "column"
+        dataPoints : dataPoints
+      }]
+    }],
+    navigator: {
+      slider: {
+        minimum: new Date(2018, 08, 01),
+        maximum: new Date(2018, 10, 01)
+      }
+    }
+  }); 
+
+  $.getJSON("https://canvasjs.com/data/docs/ethusd2018.json", function(data) {  
+    for(var i = 0; i < data.length; i++){
+      dataPoints.push({x: new Date(data[i].date), y: Number(data[i].close)});
+    }
+	
+    stockChart.render();
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,501 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "machine_shape": "hm",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    },
+    "gpuClass": "standard"
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/risan-raja/MLOP3N/blob/devcloud/Stockto.ipnyb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 13,
+      "metadata": {
+        "id": "_Gzo1do3E4Le",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "100dfc90-3d41-474f-ec13-f3b9ee62c2ce"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Collecting yfinance\n",
+            "  Downloading yfinance-0.2.3-py2.py3-none-any.whl (50 kB)\n",
+            "\u001b[K     |████████████████████████████████| 50 kB 2.9 MB/s \n",
+            "\u001b[?25hCollecting requests>=2.26\n",
+            "  Downloading requests-2.28.1-py3-none-any.whl (62 kB)\n",
+            "\u001b[K     |████████████████████████████████| 62 kB 1.1 MB/s \n",
+            "\u001b[?25hRequirement already satisfied: lxml>=4.9.1 in /usr/local/lib/python3.8/dist-packages (from yfinance) (4.9.2)\n",
+            "Collecting cryptography>=3.3.2\n",
+            "  Downloading cryptography-38.0.4-cp36-abi3-manylinux_2_24_x86_64.whl (4.0 MB)\n",
+            "\u001b[K     |████████████████████████████████| 4.0 MB 29.7 MB/s \n",
+            "\u001b[?25hRequirement already satisfied: appdirs>=1.4.4 in /usr/local/lib/python3.8/dist-packages (from yfinance) (1.4.4)\n",
+            "Requirement already satisfied: numpy>=1.16.5 in /usr/local/lib/python3.8/dist-packages (from yfinance) (1.21.6)\n",
+            "Collecting beautifulsoup4>=4.11.1\n",
+            "  Downloading beautifulsoup4-4.11.1-py3-none-any.whl (128 kB)\n",
+            "\u001b[K     |████████████████████████████████| 128 kB 64.5 MB/s \n",
+            "\u001b[?25hRequirement already satisfied: pytz>=2022.5 in /usr/local/lib/python3.8/dist-packages (from yfinance) (2022.6)\n",
+            "Requirement already satisfied: multitasking>=0.0.7 in /usr/local/lib/python3.8/dist-packages (from yfinance) (0.0.11)\n",
+            "Collecting html5lib>=1.1\n",
+            "  Downloading html5lib-1.1-py2.py3-none-any.whl (112 kB)\n",
+            "\u001b[K     |████████████████████████████████| 112 kB 64.5 MB/s \n",
+            "\u001b[?25hCollecting frozendict>=2.3.4\n",
+            "  Downloading frozendict-2.3.4-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (110 kB)\n",
+            "\u001b[K     |████████████████████████████████| 110 kB 65.6 MB/s \n",
+            "\u001b[?25hRequirement already satisfied: pandas>=1.3.0 in /usr/local/lib/python3.8/dist-packages (from yfinance) (1.5.2)\n",
+            "Collecting soupsieve>1.2\n",
+            "  Downloading soupsieve-2.3.2.post1-py3-none-any.whl (37 kB)\n",
+            "Requirement already satisfied: cffi>=1.12 in /usr/local/lib/python3.8/dist-packages (from cryptography>=3.3.2->yfinance) (1.15.1)\n",
+            "Requirement already satisfied: pycparser in /usr/local/lib/python3.8/dist-packages (from cffi>=1.12->cryptography>=3.3.2->yfinance) (2.21)\n",
+            "Requirement already satisfied: six>=1.9 in /usr/local/lib/python3.8/dist-packages (from html5lib>=1.1->yfinance) (1.15.0)\n",
+            "Requirement already satisfied: webencodings in /usr/local/lib/python3.8/dist-packages (from html5lib>=1.1->yfinance) (0.5.1)\n",
+            "Requirement already satisfied: python-dateutil>=2.8.1 in /usr/local/lib/python3.8/dist-packages (from pandas>=1.3.0->yfinance) (2.8.2)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.8/dist-packages (from requests>=2.26->yfinance) (2.10)\n",
+            "Requirement already satisfied: charset-normalizer<3,>=2 in /usr/local/lib/python3.8/dist-packages (from requests>=2.26->yfinance) (2.1.1)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.8/dist-packages (from requests>=2.26->yfinance) (2022.12.7)\n",
+            "Requirement already satisfied: urllib3<1.27,>=1.21.1 in /usr/local/lib/python3.8/dist-packages (from requests>=2.26->yfinance) (1.24.3)\n",
+            "Installing collected packages: soupsieve, requests, html5lib, frozendict, cryptography, beautifulsoup4, yfinance\n",
+            "  Attempting uninstall: requests\n",
+            "    Found existing installation: requests 2.23.0\n",
+            "    Uninstalling requests-2.23.0:\n",
+            "      Successfully uninstalled requests-2.23.0\n",
+            "  Attempting uninstall: html5lib\n",
+            "    Found existing installation: html5lib 1.0.1\n",
+            "    Uninstalling html5lib-1.0.1:\n",
+            "      Successfully uninstalled html5lib-1.0.1\n",
+            "  Attempting uninstall: beautifulsoup4\n",
+            "    Found existing installation: beautifulsoup4 4.6.3\n",
+            "    Uninstalling beautifulsoup4-4.6.3:\n",
+            "      Successfully uninstalled beautifulsoup4-4.6.3\n",
+            "Successfully installed beautifulsoup4-4.11.1 cryptography-38.0.4 frozendict-2.3.4 html5lib-1.1 requests-2.28.1 soupsieve-2.3.2.post1 yfinance-0.2.3\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install yfinance"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "### Libraries"
+      ],
+      "metadata": {
+        "id": "9owUcnfHgYcl"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd \n",
+        "import numpy as np\n",
+        "import warnings\n",
+        "warnings.filterwarnings('ignore')\n",
+        "import matplotlib.pyplot as plt\n",
+        "plt.style.use('fivethirtyeight')"
+      ],
+      "metadata": {
+        "id": "V4ZlxqQ5OxDd"
+      },
+      "execution_count": 28,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "\n",
+        "\n",
+        "# Google Drive"
+      ],
+      "metadata": {
+        "id": "Yfxw4xDmGog4"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import drive\n",
+        "drive.mount('/content/drive')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "No58_2ehNAGW",
+        "outputId": "0a86f00b-05d0-4139-9145-be449002b38b"
+      },
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Mounted at /content/drive\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install fastparquet\n",
+        "!pip install yfinance\n",
+        "!pip install zipline"
+      ],
+      "metadata": {
+        "id": "jwGU4EhsSssp",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "9f11f3e8-46f9-4dd9-8fb4-bb7808486b14"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: fastparquet in /usr/local/lib/python3.8/dist-packages (2022.12.0)\n",
+            "Requirement already satisfied: packaging in /usr/local/lib/python3.8/dist-packages (from fastparquet) (21.3)\n",
+            "Requirement already satisfied: pandas>=1.5.0 in /usr/local/lib/python3.8/dist-packages (from fastparquet) (1.5.2)\n",
+            "Requirement already satisfied: fsspec in /usr/local/lib/python3.8/dist-packages (from fastparquet) (2022.11.0)\n",
+            "Requirement already satisfied: numpy>=1.20.3 in /usr/local/lib/python3.8/dist-packages (from fastparquet) (1.21.6)\n",
+            "Requirement already satisfied: cramjam>=2.3 in /usr/local/lib/python3.8/dist-packages (from fastparquet) (2.6.2)\n",
+            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.8/dist-packages (from pandas>=1.5.0->fastparquet) (2022.6)\n",
+            "Requirement already satisfied: python-dateutil>=2.8.1 in /usr/local/lib/python3.8/dist-packages (from pandas>=1.5.0->fastparquet) (2.8.2)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.8/dist-packages (from python-dateutil>=2.8.1->pandas>=1.5.0->fastparquet) (1.15.0)\n",
+            "Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in /usr/local/lib/python3.8/dist-packages (from packaging->fastparquet) (3.0.9)\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Requirement already satisfied: yfinance in /usr/local/lib/python3.8/dist-packages (0.2.3)\n",
+            "Requirement already satisfied: appdirs>=1.4.4 in /usr/local/lib/python3.8/dist-packages (from yfinance) (1.4.4)\n",
+            "Requirement already satisfied: requests>=2.26 in /usr/local/lib/python3.8/dist-packages (from yfinance) (2.28.1)\n",
+            "Requirement already satisfied: pytz>=2022.5 in /usr/local/lib/python3.8/dist-packages (from yfinance) (2022.6)\n",
+            "Requirement already satisfied: lxml>=4.9.1 in /usr/local/lib/python3.8/dist-packages (from yfinance) (4.9.2)\n",
+            "Requirement already satisfied: beautifulsoup4>=4.11.1 in /usr/local/lib/python3.8/dist-packages (from yfinance) (4.11.1)\n",
+            "Requirement already satisfied: pandas>=1.3.0 in /usr/local/lib/python3.8/dist-packages (from yfinance) (1.5.2)\n",
+            "Requirement already satisfied: numpy>=1.16.5 in /usr/local/lib/python3.8/dist-packages (from yfinance) (1.21.6)\n",
+            "Requirement already satisfied: cryptography>=3.3.2 in /usr/local/lib/python3.8/dist-packages (from yfinance) (38.0.4)\n",
+            "Requirement already satisfied: html5lib>=1.1 in /usr/local/lib/python3.8/dist-packages (from yfinance) (1.1)\n",
+            "Requirement already satisfied: frozendict>=2.3.4 in /usr/local/lib/python3.8/dist-packages (from yfinance) (2.3.4)\n",
+            "Requirement already satisfied: multitasking>=0.0.7 in /usr/local/lib/python3.8/dist-packages (from yfinance) (0.0.11)\n",
+            "Requirement already satisfied: soupsieve>1.2 in /usr/local/lib/python3.8/dist-packages (from beautifulsoup4>=4.11.1->yfinance) (2.3.2.post1)\n",
+            "Requirement already satisfied: cffi>=1.12 in /usr/local/lib/python3.8/dist-packages (from cryptography>=3.3.2->yfinance) (1.15.1)\n",
+            "Requirement already satisfied: pycparser in /usr/local/lib/python3.8/dist-packages (from cffi>=1.12->cryptography>=3.3.2->yfinance) (2.21)\n",
+            "Requirement already satisfied: webencodings in /usr/local/lib/python3.8/dist-packages (from html5lib>=1.1->yfinance) (0.5.1)\n",
+            "Requirement already satisfied: six>=1.9 in /usr/local/lib/python3.8/dist-packages (from html5lib>=1.1->yfinance) (1.15.0)\n",
+            "Requirement already satisfied: python-dateutil>=2.8.1 in /usr/local/lib/python3.8/dist-packages (from pandas>=1.3.0->yfinance) (2.8.2)\n",
+            "Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.8/dist-packages (from requests>=2.26->yfinance) (2.10)\n",
+            "Requirement already satisfied: charset-normalizer<3,>=2 in /usr/local/lib/python3.8/dist-packages (from requests>=2.26->yfinance) (2.1.1)\n",
+            "Requirement already satisfied: urllib3<1.27,>=1.21.1 in /usr/local/lib/python3.8/dist-packages (from requests>=2.26->yfinance) (1.24.3)\n",
+            "Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.8/dist-packages (from requests>=2.26->yfinance) (2022.12.7)\n",
+            "Looking in indexes: https://pypi.org/simple, https://us-python.pkg.dev/colab-wheels/public/simple/\n",
+            "Collecting zipline\n",
+            "  Downloading zipline-1.4.1.tar.gz (5.4 MB)\n",
+            "\u001b[K     |████████████████████████████████| 5.4 MB 5.1 MB/s \n",
+            "\u001b[?25hRequirement already satisfied: pip>=7.1.0 in /usr/local/lib/python3.8/dist-packages (from zipline) (21.1.3)\n",
+            "Requirement already satisfied: setuptools>18.0 in /usr/local/lib/python3.8/dist-packages (from zipline) (57.4.0)\n",
+            "Collecting Logbook>=0.12.5\n",
+            "  Downloading Logbook-1.5.3.tar.gz (85 kB)\n",
+            "\u001b[K     |████████████████████████████████| 85 kB 4.6 MB/s \n",
+            "\u001b[?25hRequirement already satisfied: click>=4.0.0 in /usr/local/lib/python3.8/dist-packages (from zipline) (7.1.2)\n",
+            "Requirement already satisfied: six>=1.10.0 in /usr/local/lib/python3.8/dist-packages (from zipline) (1.15.0)\n",
+            "Collecting python-interface>=1.5.3\n",
+            "  Downloading python-interface-1.6.1.tar.gz (19 kB)\n",
+            "Requirement already satisfied: multipledispatch>=0.6.0 in /usr/local/lib/python3.8/dist-packages (from zipline) (0.6.0)\n",
+            "Requirement already satisfied: toolz>=0.8.2 in /usr/local/lib/python3.8/dist-packages (from zipline) (0.12.0)\n",
+            "Requirement already satisfied: numpy>=1.11.3 in /usr/local/lib/python3.8/dist-packages (from zipline) (1.21.6)\n",
+            "Collecting pandas<=0.22,>=0.18.1\n",
+            "  Downloading pandas-0.22.0.tar.gz (11.3 MB)\n",
+            "\u001b[K     |████████████████████████████████| 11.3 MB 58.1 MB/s \n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df = pd.read_parquet('d1_minute.parquet', engine='fastparquet')"
+      ],
+      "metadata": {
+        "id": "Y1ZGTsjvTF-v"
+      },
+      "execution_count": 2,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# CODES ARE STOCK CODES\n",
+        "codes = df['path'].unique()"
+      ],
+      "metadata": {
+        "id": "DI9qq98_akpO"
+      },
+      "execution_count": 37,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def get_company_data(code):\n",
+        "    global df\n",
+        "    return df[df['path']==code].copy()"
+      ],
+      "metadata": {
+        "id": "Z5qozvRDcivk"
+      },
+      "execution_count": 11,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# ACC \n",
+        "ACC = get_company_data('ACC')\n",
+        "ACC.set_index(['date'],inplace=True)\n",
+        "ACC.drop(['path'],axis=1,inplace=True)\n"
+      ],
+      "metadata": {
+        "id": "be_O97bAdyVM"
+      },
+      "execution_count": 29,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "ACC['high'].plot(rot=90,figsize=(10,10))\n",
+        "ACC['low'].plot(rot=90,figsize=(10,10))"
+      ],
+      "metadata": {
+        "id": "ptWLatRUgidp"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import plotly as px\n",
+        "idx = ACC.index[0:100]\n",
+        "px.plot(ACC.loc[idx,'high'],kind='line')"
+      ],
+      "metadata": {
+        "id": "yLCS6tPhmtJY"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "ACC['high'].plot(kind='line',backend='plotly')"
+      ],
+      "metadata": {
+        "id": "mqxNkjt-oASg"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "ACC.columns"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "g2ZvyW2pzZQt",
+        "outputId": "4cc57570-002f-482b-f8c5-60a65d5aafb3"
+      },
+      "execution_count": 69,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['close', 'high', 'low', 'open', 'volume'], dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 69
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [],
+      "metadata": {
+        "id": "JXrtJ3_tzZKy"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "ACC.index[0]\n",
+        "len('2015-02-02')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "gSi2r-9Kkriw",
+        "outputId": "ae72bba7-0c3f-4d4c-eaff-43cf0baaf6ac"
+      },
+      "execution_count": 49,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "10"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 49
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#@title Stock Market Data Visualizer\n",
+        "#@markdown Select Company And Date Range\n",
+        "\n",
+        "Month = \"Jan\" #@param [\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\",\"Jul\",\"Aug\",\"Sep\",\"Oct\",\"Nov\",\"Dec\"]\n",
+        "Start_Date = '2016-10-06'  #@param {type: \"date\" ,min:'2015-02-02'}\n",
+        "End_Date = '2016-10-08'  #@param {type: \"date\"}\n",
+        "CODE = \"TATASTEEL\" #@param [\"ACC\",\"ADANIENT\",\"ADANIGREEN\",\"ADANIPORTS\",\"AMBUJACEM\",\"APOLLOHOSP\",\"ASIANPAINT\",\"AUROPHARMA\",\"AXISBANK\",\"BAJAJ-AUTO\",\"BAJAJFINSV\",\"BAJAJHLDNG\",\"BAJFINANCE\",\"BANDHANBNK\",\"BANKBARODA\",\"BERGEPAINT\",\"BHARTIARTL\",\"BIOCON\",\"BOSCHLTD\",\"BPCL\",\"BRITANNIA\",\"CHOLAFIN\",\"CIPLA\",\"COALINDIA\",\"COLPAL\",\"DABUR\",\"DIVISLAB\",\"DLF\",\"DMART\",\"DRREDDY\",\"EICHERMOT\",\"GAIL\",\"GLAND\",\"GODREJCP\",\"GRASIM\",\"HAVELLS\",\"HCLTECH\",\"HDFCAMC\",\"HDFCBANK\",\"HDFCLIFE\",\"HDFC\",\"HEROMOTOCO\",\"HINDALCO\",\"HINDPETRO\",\"HINDUNILVR\",\"ICICIBANK\",\"ICICIGI\",\"ICICIPRULI\",\"IGL\",\"INDIGO\",\"INDUSINDBK\",\"INDUSTOWER\",\"INFY\",\"IOC\",\"ITC\",\"JINDALSTEL\",\"JSWSTEEL\",\"JUBLFOOD\",\"KOTAKBANK\",\"LICI\",\"LTI\",\"LT\",\"LUPIN\",\"MARICO\",\"MARUTI\",\"MCDOWELL-N\",\"MM\",\"MUTHOOTFIN\",\"NAUKRI\",\"NESTLEIND\",\"NIFTY 50\",\"NIFTY BANK\",\"NMDC\",\"NTPC\",\"ONGC\",\"PEL\",\"PGHH\",\"PIDILITIND\",\"PIIND\",\"PNB\",\"POWERGRID\",\"RELIANCE\",\"SAIL\",\"SBICARD\",\"SBILIFE\",\"SBIN\",\"SHREECEM\",\"SIEMENS\",\"SUNPHARMA\",\"TATACONSUM\",\"TATAMOTORS\",\"TATASTEEL\",\"TCS\",\"TECHM\",\"TITAN\",\"TORNTPHARM\",\"ULTRACEMCO\",\"UPL\",\"VEDL\",\"WIPRO\",\"YESBANK\"] {allow-input: false}\n",
+        "Col = \"volume\" #@param ['close', 'high', 'low', 'open', 'volume']\n",
+        "Col2 = \"None\" #@param ['close', 'high', 'low', 'open', 'volume','None']\n",
+        "Col3 = \"None\" #@param ['close', 'high', 'low', 'open', 'volume','None']\n",
+        "Col4 = \"None\" #@param ['close', 'high', 'low', 'open', 'volume','None']\n",
+        "\n",
+        "#@markdown ---\n",
+        "\n",
+        "def get_company_info(code,start_date,end_date,col,col2=None,col3=None,col4=None):\n",
+        "    global df\n",
+        "    data =  df[df['path'] == code].copy()\n",
+        "    data.set_index(['date'], inplace=True)\n",
+        "    data.drop(['path'],axis=1,inplace=True)\n",
+        "    # min_date = data.index[0][:10]\n",
+        "    # max_date = data.index[-1][:10]\n",
+        "    data_slice = data[start_date:end_date].index\n",
+        "    cols = [col]\n",
+        "    if col2 != 'None' and col != col2:\n",
+        "        cols.append(col2)\n",
+        "    if col3 not in cols and col3 !='None' and col3 is not None:\n",
+        "        cols.append(col3)\n",
+        "    if col4 not in cols and col4 !='None' and col4 is not None:\n",
+        "        cols.append(col4)\n",
+        "    return data.loc[data_slice,cols].plot(kind='line',backend='plotly')\n",
+        "\n",
+        "get_company_info(code=CODE,start_date=Start_Date,end_date=End_Date,col=Col,col2=Col2,col3=Col3,col4=Col4)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 542
+        },
+        "cellView": "form",
+        "id": "nL4sIQA8h5oe",
+        "outputId": "ec53b5c5-b742-4cb8-ee6b-0cf8d0ca781a"
+      },
+      "execution_count": 97,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/html": [
+              "<html>\n",
+              "<head><meta charset=\"utf-8\" /></head>\n",
+              "<body>\n",
+              "    <div>            <script src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG\"></script><script type=\"text/javascript\">if (window.MathJax) {MathJax.Hub.Config({SVG: {font: \"STIX-Web\"}});}</script>                <script type=\"text/javascript\">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>\n",
+              "        <script src=\"https://cdn.plot.ly/plotly-2.8.3.min.js\"></script>                <div id=\"292ae121-1865-455c-a09f-190ce2a8581e\" class=\"plotly-graph-div\" style=\"height:525px; width:100%;\"></div>            <script type=\"text/javascript\">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById(\"292ae121-1865-455c-a09f-190ce2a8581e\")) {                    Plotly.newPlot(                        \"292ae121-1865-455c-a09f-190ce2a8581e\",                        [{\"hovertemplate\":\"variable=volume<br>date=%{x}<br>value=%{y}<extra></extra>\",\"legendgroup\":\"volume\",\"line\":{\"color\":\"#636efa\",\"dash\":\"solid\"},\"marker\":{\"symbol\":\"circle\"},\"mode\":\"lines\",\"name\":\"volume\",\"orientation\":\"v\",\"showlegend\":true,\"x\":[\"2016-10-06 09:15:00+05:30\",\"2016-10-06 09:16:00+05:30\",\"2016-10-06 09:17:00+05:30\",\"2016-10-06 09:18:00+05:30\",\"2016-10-06 09:19:00+05:30\",\"2016-10-06 09:20:00+05:30\",\"2016-10-06 09:21:00+05:30\",\"2016-10-06 09:22:00+05:30\",\"2016-10-06 09:23:00+05:30\",\"2016-10-06 09:24:00+05:30\",\"2016-10-06 09:25:00+05:30\",\"2016-10-06 09:26:00+05:30\",\"2016-10-06 09:27:00+05:30\",\"2016-10-06 09:28:00+05:30\",\"2016-10-06 09:29:00+05:30\",\"2016-10-06 09:30:00+05:30\",\"2016-10-06 09:31:00+05:30\",\"2016-10-06 09:32:00+05:30\",\"2016-10-06 09:33:00+05:30\",\"2016-10-06 09:34:00+05:30\",\"2016-10-06 09:35:00+05:30\",\"2016-10-06 09:36:00+05:30\",\"2016-10-06 09:37:00+05:30\",\"2016-10-06 09:38:00+05:30\",\"2016-10-06 09:39:00+05:30\",\"2016-10-06 09:40:00+05:30\",\"2016-10-06 09:41:00+05:30\",\"2016-10-06 09:42:00+05:30\",\"2016-10-06 09:43:00+05:30\",\"2016-10-06 09:44:00+05:30\",\"2016-10-06 09:45:00+05:30\",\"2016-10-06 09:46:00+05:30\",\"2016-10-06 09:47:00+05:30\",\"2016-10-06 09:48:00+05:30\",\"2016-10-06 09:49:00+05:30\",\"2016-10-06 09:50:00+05:30\",\"2016-10-06 09:51:00+05:30\",\"2016-10-06 09:52:00+05:30\",\"2016-10-06 09:53:00+05:30\",\"2016-10-06 09:54:00+05:30\",\"2016-10-06 09:55:00+05:30\",\"2016-10-06 09:56:00+05:30\",\"2016-10-06 09:57:00+05:30\",\"2016-10-06 09:58:00+05:30\",\"2016-10-06 09:59:00+05:30\",\"2016-10-06 10:00:00+05:30\",\"2016-10-06 10:01:00+05:30\",\"2016-10-06 10:02:00+05:30\",\"2016-10-06 10:03:00+05:30\",\"2016-10-06 10:04:00+05:30\",\"2016-10-06 10:05:00+05:30\",\"2016-10-06 10:06:00+05:30\",\"2016-10-06 10:07:00+05:30\",\"2016-10-06 10:08:00+05:30\",\"2016-10-06 10:09:00+05:30\",\"2016-10-06 10:10:00+05:30\",\"2016-10-06 10:11:00+05:30\",\"2016-10-06 10:12:00+05:30\",\"2016-10-06 10:13:00+05:30\",\"2016-10-06 10:14:00+05:30\",\"2016-10-06 10:15:00+05:30\",\"2016-10-06 10:16:00+05:30\",\"2016-10-06 10:17:00+05:30\",\"2016-10-06 10:18:00+05:30\",\"2016-10-06 10:19:00+05:30\",\"2016-10-06 10:20:00+05:30\",\"2016-10-06 10:21:00+05:30\",\"2016-10-06 10:22:00+05:30\",\"2016-10-06 10:23:00+05:30\",\"2016-10-06 10:24:00+05:30\",\"2016-10-06 10:25:00+05:30\",\"2016-10-06 10:26:00+05:30\",\"2016-10-06 10:27:00+05:30\",\"2016-10-06 10:28:00+05:30\",\"2016-10-06 10:29:00+05:30\",\"2016-10-06 10:30:00+05:30\",\"2016-10-06 10:31:00+05:30\",\"2016-10-06 10:32:00+05:30\",\"2016-10-06 10:33:00+05:30\",\"2016-10-06 10:34:00+05:30\",\"2016-10-06 10:35:00+05:30\",\"2016-10-06 10:36:00+05:30\",\"2016-10-06 10:37:00+05:30\",\"2016-10-06 10:38:00+05:30\",\"2016-10-06 10:39:00+05:30\",\"2016-10-06 10:40:00+05:30\",\"2016-10-06 10:41:00+05:30\",\"2016-10-06 10:42:00+05:30\",\"2016-10-06 10:43:00+05:30\",\"2016-10-06 10:44:00+05:30\",\"2016-10-06 10:45:00+05:30\",\"2016-10-06 10:46:00+05:30\",\"2016-10-06 10:47:00+05:30\",\"2016-10-06 10:48:00+05:30\",\"2016-10-06 10:49:00+05:30\",\"2016-10-06 10:50:00+05:30\",\"2016-10-06 10:51:00+05:30\",\"2016-10-06 10:52:00+05:30\",\"2016-10-06 10:53:00+05:30\",\"2016-10-06 10:54:00+05:30\",\"2016-10-06 10:55:00+05:30\",\"2016-10-06 10:56:00+05:30\",\"2016-10-06 10:57:00+05:30\",\"2016-10-06 10:58:00+05:30\",\"2016-10-06 10:59:00+05:30\",\"2016-10-06 11:00:00+05:30\",\"2016-10-06 11:01:00+05:30\",\"2016-10-06 11:02:00+05:30\",\"2016-10-06 11:03:00+05:30\",\"2016-10-06 11:04:00+05:30\",\"2016-10-06 11:05:00+05:30\",\"2016-10-06 11:06:00+05:30\",\"2016-10-06 11:07:00+05:30\",\"2016-10-06 11:08:00+05:30\",\"2016-10-06 11:09:00+05:30\",\"2016-10-06 11:10:00+05:30\",\"2016-10-06 11:11:00+05:30\",\"2016-10-06 11:12:00+05:30\",\"2016-10-06 11:13:00+05:30\",\"2016-10-06 11:14:00+05:30\",\"2016-10-06 11:15:00+05:30\",\"2016-10-06 11:16:00+05:30\",\"2016-10-06 11:17:00+05:30\",\"2016-10-06 11:18:00+05:30\",\"2016-10-06 11:19:00+05:30\",\"2016-10-06 11:20:00+05:30\",\"2016-10-06 11:21:00+05:30\",\"2016-10-06 11:22:00+05:30\",\"2016-10-06 11:23:00+05:30\",\"2016-10-06 11:24:00+05:30\",\"2016-10-06 11:25:00+05:30\",\"2016-10-06 11:26:00+05:30\",\"2016-10-06 11:27:00+05:30\",\"2016-10-06 11:28:00+05:30\",\"2016-10-06 11:29:00+05:30\",\"2016-10-06 11:30:00+05:30\",\"2016-10-06 11:31:00+05:30\",\"2016-10-06 11:32:00+05:30\",\"2016-10-06 11:33:00+05:30\",\"2016-10-06 11:34:00+05:30\",\"2016-10-06 11:35:00+05:30\",\"2016-10-06 11:36:00+05:30\",\"2016-10-06 11:37:00+05:30\",\"2016-10-06 11:38:00+05:30\",\"2016-10-06 11:39:00+05:30\",\"2016-10-06 11:40:00+05:30\",\"2016-10-06 11:41:00+05:30\",\"2016-10-06 11:42:00+05:30\",\"2016-10-06 11:43:00+05:30\",\"2016-10-06 11:44:00+05:30\",\"2016-10-06 11:45:00+05:30\",\"2016-10-06 11:46:00+05:30\",\"2016-10-06 11:47:00+05:30\",\"2016-10-06 11:48:00+05:30\",\"2016-10-06 11:49:00+05:30\",\"2016-10-06 11:50:00+05:30\",\"2016-10-06 11:51:00+05:30\",\"2016-10-06 11:52:00+05:30\",\"2016-10-06 11:53:00+05:30\",\"2016-10-06 11:54:00+05:30\",\"2016-10-06 11:55:00+05:30\",\"2016-10-06 11:56:00+05:30\",\"2016-10-06 11:57:00+05:30\",\"2016-10-06 11:58:00+05:30\",\"2016-10-06 11:59:00+05:30\",\"2016-10-06 12:00:00+05:30\",\"2016-10-06 12:01:00+05:30\",\"2016-10-06 12:02:00+05:30\",\"2016-10-06 12:03:00+05:30\",\"2016-10-06 12:04:00+05:30\",\"2016-10-06 12:05:00+05:30\",\"2016-10-06 12:06:00+05:30\",\"2016-10-06 12:07:00+05:30\",\"2016-10-06 12:08:00+05:30\",\"2016-10-06 12:09:00+05:30\",\"2016-10-06 12:10:00+05:30\",\"2016-10-06 12:11:00+05:30\",\"2016-10-06 12:12:00+05:30\",\"2016-10-06 12:13:00+05:30\",\"2016-10-06 12:14:00+05:30\",\"2016-10-06 12:15:00+05:30\",\"2016-10-06 12:16:00+05:30\",\"2016-10-06 12:17:00+05:30\",\"2016-10-06 12:18:00+05:30\",\"2016-10-06 12:19:00+05:30\",\"2016-10-06 12:20:00+05:30\",\"2016-10-06 12:21:00+05:30\",\"2016-10-06 12:22:00+05:30\",\"2016-10-06 12:23:00+05:30\",\"2016-10-06 12:24:00+05:30\",\"2016-10-06 12:25:00+05:30\",\"2016-10-06 12:26:00+05:30\",\"2016-10-06 12:27:00+05:30\",\"2016-10-06 12:28:00+05:30\",\"2016-10-06 12:29:00+05:30\",\"2016-10-06 12:30:00+05:30\",\"2016-10-06 12:31:00+05:30\",\"2016-10-06 12:32:00+05:30\",\"2016-10-06 12:33:00+05:30\",\"2016-10-06 12:34:00+05:30\",\"2016-10-06 12:35:00+05:30\",\"2016-10-06 12:36:00+05:30\",\"2016-10-06 12:37:00+05:30\",\"2016-10-06 12:38:00+05:30\",\"2016-10-06 12:39:00+05:30\",\"2016-10-06 12:40:00+05:30\",\"2016-10-06 12:41:00+05:30\",\"2016-10-06 12:42:00+05:30\",\"2016-10-06 12:43:00+05:30\",\"2016-10-06 12:44:00+05:30\",\"2016-10-06 12:45:00+05:30\",\"2016-10-06 12:46:00+05:30\",\"2016-10-06 12:47:00+05:30\",\"2016-10-06 12:48:00+05:30\",\"2016-10-06 12:49:00+05:30\",\"2016-10-06 12:50:00+05:30\",\"2016-10-06 12:51:00+05:30\",\"2016-10-06 12:52:00+05:30\",\"2016-10-06 12:53:00+05:30\",\"2016-10-06 12:54:00+05:30\",\"2016-10-06 12:55:00+05:30\",\"2016-10-06 12:56:00+05:30\",\"2016-10-06 12:57:00+05:30\",\"2016-10-06 12:58:00+05:30\",\"2016-10-06 12:59:00+05:30\",\"2016-10-06 13:00:00+05:30\",\"2016-10-06 13:01:00+05:30\",\"2016-10-06 13:02:00+05:30\",\"2016-10-06 13:03:00+05:30\",\"2016-10-06 13:04:00+05:30\",\"2016-10-06 13:05:00+05:30\",\"2016-10-06 13:06:00+05:30\",\"2016-10-06 13:07:00+05:30\",\"2016-10-06 13:08:00+05:30\",\"2016-10-06 13:09:00+05:30\",\"2016-10-06 13:10:00+05:30\",\"2016-10-06 13:11:00+05:30\",\"2016-10-06 13:12:00+05:30\",\"2016-10-06 13:13:00+05:30\",\"2016-10-06 13:14:00+05:30\",\"2016-10-06 13:15:00+05:30\",\"2016-10-06 13:16:00+05:30\",\"2016-10-06 13:17:00+05:30\",\"2016-10-06 13:18:00+05:30\",\"2016-10-06 13:19:00+05:30\",\"2016-10-06 13:20:00+05:30\",\"2016-10-06 13:21:00+05:30\",\"2016-10-06 13:22:00+05:30\",\"2016-10-06 13:23:00+05:30\",\"2016-10-06 13:24:00+05:30\",\"2016-10-06 13:25:00+05:30\",\"2016-10-06 13:26:00+05:30\",\"2016-10-06 13:27:00+05:30\",\"2016-10-06 13:28:00+05:30\",\"2016-10-06 13:29:00+05:30\",\"2016-10-06 13:30:00+05:30\",\"2016-10-06 13:31:00+05:30\",\"2016-10-06 13:32:00+05:30\",\"2016-10-06 13:33:00+05:30\",\"2016-10-06 13:34:00+05:30\",\"2016-10-06 13:35:00+05:30\",\"2016-10-06 13:36:00+05:30\",\"2016-10-06 13:37:00+05:30\",\"2016-10-06 13:38:00+05:30\",\"2016-10-06 13:39:00+05:30\",\"2016-10-06 13:40:00+05:30\",\"2016-10-06 13:41:00+05:30\",\"2016-10-06 13:42:00+05:30\",\"2016-10-06 13:43:00+05:30\",\"2016-10-06 13:44:00+05:30\",\"2016-10-06 13:45:00+05:30\",\"2016-10-06 13:46:00+05:30\",\"2016-10-06 13:47:00+05:30\",\"2016-10-06 13:48:00+05:30\",\"2016-10-06 13:49:00+05:30\",\"2016-10-06 13:50:00+05:30\",\"2016-10-06 13:51:00+05:30\",\"2016-10-06 13:52:00+05:30\",\"2016-10-06 13:53:00+05:30\",\"2016-10-06 13:54:00+05:30\",\"2016-10-06 13:55:00+05:30\",\"2016-10-06 13:56:00+05:30\",\"2016-10-06 13:57:00+05:30\",\"2016-10-06 13:58:00+05:30\",\"2016-10-06 13:59:00+05:30\",\"2016-10-06 14:00:00+05:30\",\"2016-10-06 14:01:00+05:30\",\"2016-10-06 14:02:00+05:30\",\"2016-10-06 14:03:00+05:30\",\"2016-10-06 14:04:00+05:30\",\"2016-10-06 14:05:00+05:30\",\"2016-10-06 14:06:00+05:30\",\"2016-10-06 14:07:00+05:30\",\"2016-10-06 14:08:00+05:30\",\"2016-10-06 14:09:00+05:30\",\"2016-10-06 14:10:00+05:30\",\"2016-10-06 14:11:00+05:30\",\"2016-10-06 14:12:00+05:30\",\"2016-10-06 14:13:00+05:30\",\"2016-10-06 14:14:00+05:30\",\"2016-10-06 14:15:00+05:30\",\"2016-10-06 14:16:00+05:30\",\"2016-10-06 14:17:00+05:30\",\"2016-10-06 14:18:00+05:30\",\"2016-10-06 14:19:00+05:30\",\"2016-10-06 14:20:00+05:30\",\"2016-10-06 14:21:00+05:30\",\"2016-10-06 14:22:00+05:30\",\"2016-10-06 14:23:00+05:30\",\"2016-10-06 14:24:00+05:30\",\"2016-10-06 14:25:00+05:30\",\"2016-10-06 14:26:00+05:30\",\"2016-10-06 14:27:00+05:30\",\"2016-10-06 14:28:00+05:30\",\"2016-10-06 14:29:00+05:30\",\"2016-10-06 14:30:00+05:30\",\"2016-10-06 14:31:00+05:30\",\"2016-10-06 14:32:00+05:30\",\"2016-10-06 14:33:00+05:30\",\"2016-10-06 14:34:00+05:30\",\"2016-10-06 14:35:00+05:30\",\"2016-10-06 14:36:00+05:30\",\"2016-10-06 14:37:00+05:30\",\"2016-10-06 14:38:00+05:30\",\"2016-10-06 14:39:00+05:30\",\"2016-10-06 14:40:00+05:30\",\"2016-10-06 14:41:00+05:30\",\"2016-10-06 14:42:00+05:30\",\"2016-10-06 14:43:00+05:30\",\"2016-10-06 14:44:00+05:30\",\"2016-10-06 14:45:00+05:30\",\"2016-10-06 14:46:00+05:30\",\"2016-10-06 14:47:00+05:30\",\"2016-10-06 14:48:00+05:30\",\"2016-10-06 14:49:00+05:30\",\"2016-10-06 14:50:00+05:30\",\"2016-10-06 14:51:00+05:30\",\"2016-10-06 14:52:00+05:30\",\"2016-10-06 14:53:00+05:30\",\"2016-10-06 14:54:00+05:30\",\"2016-10-06 14:55:00+05:30\",\"2016-10-06 14:56:00+05:30\",\"2016-10-06 14:57:00+05:30\",\"2016-10-06 14:58:00+05:30\",\"2016-10-06 14:59:00+05:30\",\"2016-10-06 15:00:00+05:30\",\"2016-10-06 15:01:00+05:30\",\"2016-10-06 15:02:00+05:30\",\"2016-10-06 15:03:00+05:30\",\"2016-10-06 15:04:00+05:30\",\"2016-10-06 15:05:00+05:30\",\"2016-10-06 15:06:00+05:30\",\"2016-10-06 15:07:00+05:30\",\"2016-10-06 15:08:00+05:30\",\"2016-10-06 15:09:00+05:30\",\"2016-10-06 15:10:00+05:30\",\"2016-10-06 15:11:00+05:30\",\"2016-10-06 15:12:00+05:30\",\"2016-10-06 15:13:00+05:30\",\"2016-10-06 15:14:00+05:30\",\"2016-10-06 15:15:00+05:30\",\"2016-10-06 15:16:00+05:30\",\"2016-10-06 15:17:00+05:30\",\"2016-10-06 15:18:00+05:30\",\"2016-10-06 15:19:00+05:30\",\"2016-10-06 15:20:00+05:30\",\"2016-10-06 15:21:00+05:30\",\"2016-10-06 15:22:00+05:30\",\"2016-10-06 15:23:00+05:30\",\"2016-10-06 15:24:00+05:30\",\"2016-10-06 15:25:00+05:30\",\"2016-10-06 15:26:00+05:30\",\"2016-10-06 15:27:00+05:30\",\"2016-10-06 15:28:00+05:30\",\"2016-10-06 15:29:00+05:30\",\"2016-10-07 09:15:00+05:30\",\"2016-10-07 09:16:00+05:30\",\"2016-10-07 09:17:00+05:30\",\"2016-10-07 09:18:00+05:30\",\"2016-10-07 09:19:00+05:30\",\"2016-10-07 09:20:00+05:30\",\"2016-10-07 09:21:00+05:30\",\"2016-10-07 09:22:00+05:30\",\"2016-10-07 09:23:00+05:30\",\"2016-10-07 09:24:00+05:30\",\"2016-10-07 09:25:00+05:30\",\"2016-10-07 09:26:00+05:30\",\"2016-10-07 09:27:00+05:30\",\"2016-10-07 09:28:00+05:30\",\"2016-10-07 09:29:00+05:30\",\"2016-10-07 09:30:00+05:30\",\"2016-10-07 09:31:00+05:30\",\"2016-10-07 09:32:00+05:30\",\"2016-10-07 09:33:00+05:30\",\"2016-10-07 09:34:00+05:30\",\"2016-10-07 09:35:00+05:30\",\"2016-10-07 09:36:00+05:30\",\"2016-10-07 09:37:00+05:30\",\"2016-10-07 09:38:00+05:30\",\"2016-10-07 09:39:00+05:30\",\"2016-10-07 09:40:00+05:30\",\"2016-10-07 09:41:00+05:30\",\"2016-10-07 09:42:00+05:30\",\"2016-10-07 09:43:00+05:30\",\"2016-10-07 09:44:00+05:30\",\"2016-10-07 09:45:00+05:30\",\"2016-10-07 09:46:00+05:30\",\"2016-10-07 09:47:00+05:30\",\"2016-10-07 09:48:00+05:30\",\"2016-10-07 09:49:00+05:30\",\"2016-10-07 09:50:00+05:30\",\"2016-10-07 09:51:00+05:30\",\"2016-10-07 09:52:00+05:30\",\"2016-10-07 09:53:00+05:30\",\"2016-10-07 09:54:00+05:30\",\"2016-10-07 09:55:00+05:30\",\"2016-10-07 09:56:00+05:30\",\"2016-10-07 09:57:00+05:30\",\"2016-10-07 09:58:00+05:30\",\"2016-10-07 09:59:00+05:30\",\"2016-10-07 10:00:00+05:30\",\"2016-10-07 10:01:00+05:30\",\"2016-10-07 10:02:00+05:30\",\"2016-10-07 10:03:00+05:30\",\"2016-10-07 10:04:00+05:30\",\"2016-10-07 10:05:00+05:30\",\"2016-10-07 10:06:00+05:30\",\"2016-10-07 10:07:00+05:30\",\"2016-10-07 10:08:00+05:30\",\"2016-10-07 10:09:00+05:30\",\"2016-10-07 10:10:00+05:30\",\"2016-10-07 10:11:00+05:30\",\"2016-10-07 10:12:00+05:30\",\"2016-10-07 10:13:00+05:30\",\"2016-10-07 10:14:00+05:30\",\"2016-10-07 10:15:00+05:30\",\"2016-10-07 10:16:00+05:30\",\"2016-10-07 10:17:00+05:30\",\"2016-10-07 10:18:00+05:30\",\"2016-10-07 10:19:00+05:30\",\"2016-10-07 10:20:00+05:30\",\"2016-10-07 10:21:00+05:30\",\"2016-10-07 10:22:00+05:30\",\"2016-10-07 10:23:00+05:30\",\"2016-10-07 10:24:00+05:30\",\"2016-10-07 10:25:00+05:30\",\"2016-10-07 10:26:00+05:30\",\"2016-10-07 10:27:00+05:30\",\"2016-10-07 10:28:00+05:30\",\"2016-10-07 10:29:00+05:30\",\"2016-10-07 10:30:00+05:30\",\"2016-10-07 10:31:00+05:30\",\"2016-10-07 10:32:00+05:30\",\"2016-10-07 10:33:00+05:30\",\"2016-10-07 10:34:00+05:30\",\"2016-10-07 10:35:00+05:30\",\"2016-10-07 10:36:00+05:30\",\"2016-10-07 10:37:00+05:30\",\"2016-10-07 10:38:00+05:30\",\"2016-10-07 10:39:00+05:30\",\"2016-10-07 10:40:00+05:30\",\"2016-10-07 10:41:00+05:30\",\"2016-10-07 10:42:00+05:30\",\"2016-10-07 10:43:00+05:30\",\"2016-10-07 10:44:00+05:30\",\"2016-10-07 10:45:00+05:30\",\"2016-10-07 10:46:00+05:30\",\"2016-10-07 10:47:00+05:30\",\"2016-10-07 10:48:00+05:30\",\"2016-10-07 10:49:00+05:30\",\"2016-10-07 10:50:00+05:30\",\"2016-10-07 10:51:00+05:30\",\"2016-10-07 10:52:00+05:30\",\"2016-10-07 10:53:00+05:30\",\"2016-10-07 10:54:00+05:30\",\"2016-10-07 10:55:00+05:30\",\"2016-10-07 10:56:00+05:30\",\"2016-10-07 10:57:00+05:30\",\"2016-10-07 10:58:00+05:30\",\"2016-10-07 10:59:00+05:30\",\"2016-10-07 11:00:00+05:30\",\"2016-10-07 11:01:00+05:30\",\"2016-10-07 11:02:00+05:30\",\"2016-10-07 11:03:00+05:30\",\"2016-10-07 11:04:00+05:30\",\"2016-10-07 11:05:00+05:30\",\"2016-10-07 11:06:00+05:30\",\"2016-10-07 11:07:00+05:30\",\"2016-10-07 11:08:00+05:30\",\"2016-10-07 11:09:00+05:30\",\"2016-10-07 11:10:00+05:30\",\"2016-10-07 11:11:00+05:30\",\"2016-10-07 11:12:00+05:30\",\"2016-10-07 11:13:00+05:30\",\"2016-10-07 11:14:00+05:30\",\"2016-10-07 11:15:00+05:30\",\"2016-10-07 11:16:00+05:30\",\"2016-10-07 11:17:00+05:30\",\"2016-10-07 11:18:00+05:30\",\"2016-10-07 11:19:00+05:30\",\"2016-10-07 11:20:00+05:30\",\"2016-10-07 11:21:00+05:30\",\"2016-10-07 11:22:00+05:30\",\"2016-10-07 11:23:00+05:30\",\"2016-10-07 11:24:00+05:30\",\"2016-10-07 11:25:00+05:30\",\"2016-10-07 11:26:00+05:30\",\"2016-10-07 11:27:00+05:30\",\"2016-10-07 11:28:00+05:30\",\"2016-10-07 11:29:00+05:30\",\"2016-10-07 11:30:00+05:30\",\"2016-10-07 11:31:00+05:30\",\"2016-10-07 11:32:00+05:30\",\"2016-10-07 11:33:00+05:30\",\"2016-10-07 11:34:00+05:30\",\"2016-10-07 11:35:00+05:30\",\"2016-10-07 11:36:00+05:30\",\"2016-10-07 11:37:00+05:30\",\"2016-10-07 11:38:00+05:30\",\"2016-10-07 11:39:00+05:30\",\"2016-10-07 11:40:00+05:30\",\"2016-10-07 11:41:00+05:30\",\"2016-10-07 11:42:00+05:30\",\"2016-10-07 11:43:00+05:30\",\"2016-10-07 11:44:00+05:30\",\"2016-10-07 11:45:00+05:30\",\"2016-10-07 11:46:00+05:30\",\"2016-10-07 11:47:00+05:30\",\"2016-10-07 11:48:00+05:30\",\"2016-10-07 11:49:00+05:30\",\"2016-10-07 11:50:00+05:30\",\"2016-10-07 11:51:00+05:30\",\"2016-10-07 11:52:00+05:30\",\"2016-10-07 11:53:00+05:30\",\"2016-10-07 11:54:00+05:30\",\"2016-10-07 11:55:00+05:30\",\"2016-10-07 11:56:00+05:30\",\"2016-10-07 11:57:00+05:30\",\"2016-10-07 11:58:00+05:30\",\"2016-10-07 11:59:00+05:30\",\"2016-10-07 12:00:00+05:30\",\"2016-10-07 12:01:00+05:30\",\"2016-10-07 12:02:00+05:30\",\"2016-10-07 12:03:00+05:30\",\"2016-10-07 12:04:00+05:30\",\"2016-10-07 12:05:00+05:30\",\"2016-10-07 12:06:00+05:30\",\"2016-10-07 12:07:00+05:30\",\"2016-10-07 12:08:00+05:30\",\"2016-10-07 12:09:00+05:30\",\"2016-10-07 12:10:00+05:30\",\"2016-10-07 12:11:00+05:30\",\"2016-10-07 12:12:00+05:30\",\"2016-10-07 12:13:00+05:30\",\"2016-10-07 12:14:00+05:30\",\"2016-10-07 12:15:00+05:30\",\"2016-10-07 12:16:00+05:30\",\"2016-10-07 12:17:00+05:30\",\"2016-10-07 12:18:00+05:30\",\"2016-10-07 12:19:00+05:30\",\"2016-10-07 12:20:00+05:30\",\"2016-10-07 12:21:00+05:30\",\"2016-10-07 12:22:00+05:30\",\"2016-10-07 12:23:00+05:30\",\"2016-10-07 12:24:00+05:30\",\"2016-10-07 12:25:00+05:30\",\"2016-10-07 12:26:00+05:30\",\"2016-10-07 12:27:00+05:30\",\"2016-10-07 12:28:00+05:30\",\"2016-10-07 12:29:00+05:30\",\"2016-10-07 12:30:00+05:30\",\"2016-10-07 12:31:00+05:30\",\"2016-10-07 12:32:00+05:30\",\"2016-10-07 12:33:00+05:30\",\"2016-10-07 12:34:00+05:30\",\"2016-10-07 12:35:00+05:30\",\"2016-10-07 12:36:00+05:30\",\"2016-10-07 12:37:00+05:30\",\"2016-10-07 12:38:00+05:30\",\"2016-10-07 12:39:00+05:30\",\"2016-10-07 12:40:00+05:30\",\"2016-10-07 12:41:00+05:30\",\"2016-10-07 12:42:00+05:30\",\"2016-10-07 12:43:00+05:30\",\"2016-10-07 12:44:00+05:30\",\"2016-10-07 12:45:00+05:30\",\"2016-10-07 12:46:00+05:30\",\"2016-10-07 12:47:00+05:30\",\"2016-10-07 12:48:00+05:30\",\"2016-10-07 12:49:00+05:30\",\"2016-10-07 12:50:00+05:30\",\"2016-10-07 12:51:00+05:30\",\"2016-10-07 12:52:00+05:30\",\"2016-10-07 12:53:00+05:30\",\"2016-10-07 12:54:00+05:30\",\"2016-10-07 12:55:00+05:30\",\"2016-10-07 12:56:00+05:30\",\"2016-10-07 12:57:00+05:30\",\"2016-10-07 12:58:00+05:30\",\"2016-10-07 12:59:00+05:30\",\"2016-10-07 13:00:00+05:30\",\"2016-10-07 13:01:00+05:30\",\"2016-10-07 13:02:00+05:30\",\"2016-10-07 13:03:00+05:30\",\"2016-10-07 13:04:00+05:30\",\"2016-10-07 13:05:00+05:30\",\"2016-10-07 13:06:00+05:30\",\"2016-10-07 13:07:00+05:30\",\"2016-10-07 13:08:00+05:30\",\"2016-10-07 13:09:00+05:30\",\"2016-10-07 13:10:00+05:30\",\"2016-10-07 13:11:00+05:30\",\"2016-10-07 13:12:00+05:30\",\"2016-10-07 13:13:00+05:30\",\"2016-10-07 13:14:00+05:30\",\"2016-10-07 13:15:00+05:30\",\"2016-10-07 13:16:00+05:30\",\"2016-10-07 13:17:00+05:30\",\"2016-10-07 13:18:00+05:30\",\"2016-10-07 13:19:00+05:30\",\"2016-10-07 13:20:00+05:30\",\"2016-10-07 13:21:00+05:30\",\"2016-10-07 13:22:00+05:30\",\"2016-10-07 13:23:00+05:30\",\"2016-10-07 13:24:00+05:30\",\"2016-10-07 13:25:00+05:30\",\"2016-10-07 13:26:00+05:30\",\"2016-10-07 13:27:00+05:30\",\"2016-10-07 13:28:00+05:30\",\"2016-10-07 13:29:00+05:30\",\"2016-10-07 13:30:00+05:30\",\"2016-10-07 13:31:00+05:30\",\"2016-10-07 13:32:00+05:30\",\"2016-10-07 13:33:00+05:30\",\"2016-10-07 13:34:00+05:30\",\"2016-10-07 13:35:00+05:30\",\"2016-10-07 13:36:00+05:30\",\"2016-10-07 13:37:00+05:30\",\"2016-10-07 13:38:00+05:30\",\"2016-10-07 13:39:00+05:30\",\"2016-10-07 13:40:00+05:30\",\"2016-10-07 13:41:00+05:30\",\"2016-10-07 13:42:00+05:30\",\"2016-10-07 13:43:00+05:30\",\"2016-10-07 13:44:00+05:30\",\"2016-10-07 13:45:00+05:30\",\"2016-10-07 13:46:00+05:30\",\"2016-10-07 13:47:00+05:30\",\"2016-10-07 13:48:00+05:30\",\"2016-10-07 13:49:00+05:30\",\"2016-10-07 13:50:00+05:30\",\"2016-10-07 13:51:00+05:30\",\"2016-10-07 13:52:00+05:30\",\"2016-10-07 13:53:00+05:30\",\"2016-10-07 13:54:00+05:30\",\"2016-10-07 13:55:00+05:30\",\"2016-10-07 13:56:00+05:30\",\"2016-10-07 13:57:00+05:30\",\"2016-10-07 13:58:00+05:30\",\"2016-10-07 13:59:00+05:30\",\"2016-10-07 14:00:00+05:30\",\"2016-10-07 14:01:00+05:30\",\"2016-10-07 14:02:00+05:30\",\"2016-10-07 14:03:00+05:30\",\"2016-10-07 14:04:00+05:30\",\"2016-10-07 14:05:00+05:30\",\"2016-10-07 14:06:00+05:30\",\"2016-10-07 14:07:00+05:30\",\"2016-10-07 14:08:00+05:30\",\"2016-10-07 14:09:00+05:30\",\"2016-10-07 14:10:00+05:30\",\"2016-10-07 14:11:00+05:30\",\"2016-10-07 14:12:00+05:30\",\"2016-10-07 14:13:00+05:30\",\"2016-10-07 14:14:00+05:30\",\"2016-10-07 14:15:00+05:30\",\"2016-10-07 14:16:00+05:30\",\"2016-10-07 14:17:00+05:30\",\"2016-10-07 14:18:00+05:30\",\"2016-10-07 14:19:00+05:30\",\"2016-10-07 14:20:00+05:30\",\"2016-10-07 14:21:00+05:30\",\"2016-10-07 14:22:00+05:30\",\"2016-10-07 14:23:00+05:30\",\"2016-10-07 14:24:00+05:30\",\"2016-10-07 14:25:00+05:30\",\"2016-10-07 14:26:00+05:30\",\"2016-10-07 14:27:00+05:30\",\"2016-10-07 14:28:00+05:30\",\"2016-10-07 14:29:00+05:30\",\"2016-10-07 14:30:00+05:30\",\"2016-10-07 14:31:00+05:30\",\"2016-10-07 14:32:00+05:30\",\"2016-10-07 14:33:00+05:30\",\"2016-10-07 14:34:00+05:30\",\"2016-10-07 14:35:00+05:30\",\"2016-10-07 14:36:00+05:30\",\"2016-10-07 14:37:00+05:30\",\"2016-10-07 14:38:00+05:30\",\"2016-10-07 14:39:00+05:30\",\"2016-10-07 14:40:00+05:30\",\"2016-10-07 14:41:00+05:30\",\"2016-10-07 14:42:00+05:30\",\"2016-10-07 14:43:00+05:30\",\"2016-10-07 14:44:00+05:30\",\"2016-10-07 14:45:00+05:30\",\"2016-10-07 14:46:00+05:30\",\"2016-10-07 14:47:00+05:30\",\"2016-10-07 14:48:00+05:30\",\"2016-10-07 14:49:00+05:30\",\"2016-10-07 14:50:00+05:30\",\"2016-10-07 14:51:00+05:30\",\"2016-10-07 14:52:00+05:30\",\"2016-10-07 14:53:00+05:30\",\"2016-10-07 14:54:00+05:30\",\"2016-10-07 14:55:00+05:30\",\"2016-10-07 14:56:00+05:30\",\"2016-10-07 14:57:00+05:30\",\"2016-10-07 14:58:00+05:30\",\"2016-10-07 14:59:00+05:30\",\"2016-10-07 15:00:00+05:30\",\"2016-10-07 15:01:00+05:30\",\"2016-10-07 15:02:00+05:30\",\"2016-10-07 15:03:00+05:30\",\"2016-10-07 15:04:00+05:30\",\"2016-10-07 15:05:00+05:30\",\"2016-10-07 15:06:00+05:30\",\"2016-10-07 15:07:00+05:30\",\"2016-10-07 15:08:00+05:30\",\"2016-10-07 15:09:00+05:30\",\"2016-10-07 15:10:00+05:30\",\"2016-10-07 15:11:00+05:30\",\"2016-10-07 15:12:00+05:30\",\"2016-10-07 15:13:00+05:30\",\"2016-10-07 15:14:00+05:30\",\"2016-10-07 15:15:00+05:30\",\"2016-10-07 15:16:00+05:30\",\"2016-10-07 15:17:00+05:30\",\"2016-10-07 15:18:00+05:30\",\"2016-10-07 15:19:00+05:30\",\"2016-10-07 15:20:00+05:30\",\"2016-10-07 15:21:00+05:30\",\"2016-10-07 15:22:00+05:30\",\"2016-10-07 15:23:00+05:30\",\"2016-10-07 15:24:00+05:30\",\"2016-10-07 15:25:00+05:30\",\"2016-10-07 15:26:00+05:30\",\"2016-10-07 15:27:00+05:30\",\"2016-10-07 15:28:00+05:30\",\"2016-10-07 15:29:00+05:30\"],\"xaxis\":\"x\",\"y\":[419650,315040,275090,310990,335930,319960,194750,226420,163560,165830,180070,230270,133280,225830,158530,155330,114850,221300,49000,188810,184580,46580,154260,147410,190220,492300,256370,109360,524430,174470,95800,159390,44890,65960,71160,27530,83030,55090,38660,59080,33570,52350,93980,56010,76720,41470,59720,132420,27020,22330,14090,70850,40450,191600,67110,10410,45690,24720,19030,48480,319890,118750,110640,85160,112970,84230,896210,138230,82020,94310,115110,38890,110650,39650,35760,36070,58610,64360,31770,34560,126130,20300,6920,42950,49660,50630,32580,71650,25490,26470,42310,18240,26650,29860,19750,10040,140510,27010,9250,32340,13740,233860,59660,90780,340430,198010,93490,68730,180520,323100,222330,102170,113060,49580,51430,71440,142250,111930,127330,55120,38350,45200,50990,59080,16310,57180,22960,71550,58750,62280,65850,42900,70150,62200,109370,43100,92630,191180,161410,156180,75010,131810,50900,126490,68140,105910,60280,113000,143100,61260,54640,195020,65430,91250,43250,69830,61850,57310,20060,86910,57460,16770,84110,35460,26750,67620,13500,97030,64730,112210,89840,44850,55700,118100,106630,46190,48710,211700,241940,333540,220480,105190,455840,869030,1000110,253070,220100,46250,73020,310250,224550,1833000,1758780,1063330,620750,298500,239650,238100,85800,199210,56030,169840,174200,152370,70260,169130,288180,199280,336370,1557980,139060,173450,101080,213710,100970,94490,228640,459690,121450,102560,154360,142830,215420,249720,68770,67990,57280,171770,42440,43820,228520,151870,60200,39680,51810,21380,21630,59770,31730,11730,152560,90430,99370,120080,57500,84340,75620,91990,147520,106220,94170,126260,539620,393360,726650,423980,923900,171780,332160,146670,151240,53340,207390,317390,345640,375790,232510,1281490,370060,1342350,427470,1005970,725750,540560,112750,184570,223240,155150,142600,114160,92220,58010,74000,82410,184270,692900,705140,1447210,542420,270990,186670,177660,222970,275990,292090,486880,241110,192830,80210,172340,171440,61040,148540,93610,154330,178690,105390,204470,74020,55360,86450,189370,194660,72790,30040,86720,236210,180730,14250,73110,183160,103270,122240,395400,468840,444400,204560,252410,216380,470490,134630,330190,275160,246600,288900,1234840,1013970,146460,594180,912680,479980,367080,452270,179390,249310,467080,330870,247780,163040,302130,362700,284530,238060,209170,122640,146190,374670,355700,153460,213270,502540,599050,263060,294790,133470,327990,161520,219330,222120,297850,281560,432450,383780,327050,414370,730150,576280,302240,237200,128240,251930,523370,334180,304620,229300,233390,355090,160420,73480,171540,205150,110270,239190,82590,179620,144280,251020,156310,172870,99470,364970,77500,91340,328580,148470,91540,121930,141820,239360,99740,43970,224240,71110,85790,35630,76260,42160,168640,290340,101500,107420,47480,81330,144200,259460,213780,122870,43650,50460,24660,86650,88330,78090,34070,70520,73500,110360,35790,130580,106970,77920,146500,92310,231540,97000,16760,68440,63670,27530,20390,88300,19920,83970,36510,61910,17300,30660,96830,1048800,610610,983290,452160,594410,717480,359490,134980,139470,56710,74240,117090,109920,129360,297580,172890,242230,332280,2107370,825810,467880,160080,1036670,763220,731100,1297530,348510,350820,215550,199340,421350,185830,293280,277250,320530,833660,248190,188470,181350,402830,177570,93530,121360,426280,294490,228900,61300,74130,199010,41630,264050,58270,147060,52300,148120,315320,433940,614920,350730,159650,169890,85140,154140,232170,603300,907330,473950,675630,717210,464900,348970,386450,1816730,529080,290980,549110,229470,349820,394790,182790,194160,327490,199240,109070,201810,288410,118120,146770,276210,165320,113450,151350,144560,111330,296790,452820,524820,322350,120140,170420,136550,64810,198780,76820,97940,112810,107080,75790,118460,313470,175330,900860,292640,392680,608710,404420,374510,417310,354130,718710,416390,1533870,656010,1436650,893810,600570,382640,222640,436790,221670,160240,273440,202600,361740,155070,148910,84500,158860,71370,92070,105090,109450,138050,78550,75860,392950,126780,65110,58840,112300,503210,518290,228710,223500,186580,135840,147630,266090,357070,136420,74000,274760,94280,287300,172980,445740,334960,297460,113820,119360,96450,101110,56040,42510,82840,299170,739030,930970,279970,290470,306610,591710,124730,186550,206470,129040,389160,135360,139930,116130,92600,111930,169070,391490,130570,152720,129200,212130,701390,370100,143510,89100,164340,131000,161860,127400,81130,165500,80010,926840,196030,131550,168300,172530,78690,72100,255810,178350,389430,214170,863010,496190,354700,212960,463160,242500,393220,333860,2084530,276010,276310,182590,162320,148060,374470,290330,180000,194870,277940,609950,340490,151970,336440,137930,145500,141070,300380,231830,1102650,1176180,1618110,872500,440710,830390,781640,590170,503840,373220,599070,355650,280820,369360,254370,317910,285150,221720,535030,441220,214940,185860,385200,216780,420350,336190,1049040,317000,283030,1595480,996310,281130,689130,489930,1024920,476480,303850,441930,311310,356620,371930,367390,656200,796690],\"yaxis\":\"y\",\"type\":\"scatter\"}],                        {\"template\":{\"data\":{\"bar\":[{\"error_x\":{\"color\":\"#2a3f5f\"},\"error_y\":{\"color\":\"#2a3f5f\"},\"marker\":{\"line\":{\"color\":\"#E5ECF6\",\"width\":0.5},\"pattern\":{\"fillmode\":\"overlay\",\"size\":10,\"solidity\":0.2}},\"type\":\"bar\"}],\"barpolar\":[{\"marker\":{\"line\":{\"color\":\"#E5ECF6\",\"width\":0.5},\"pattern\":{\"fillmode\":\"overlay\",\"size\":10,\"solidity\":0.2}},\"type\":\"barpolar\"}],\"carpet\":[{\"aaxis\":{\"endlinecolor\":\"#2a3f5f\",\"gridcolor\":\"white\",\"linecolor\":\"white\",\"minorgridcolor\":\"white\",\"startlinecolor\":\"#2a3f5f\"},\"baxis\":{\"endlinecolor\":\"#2a3f5f\",\"gridcolor\":\"white\",\"linecolor\":\"white\",\"minorgridcolor\":\"white\",\"startlinecolor\":\"#2a3f5f\"},\"type\":\"carpet\"}],\"choropleth\":[{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"},\"type\":\"choropleth\"}],\"contour\":[{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"},\"colorscale\":[[0.0,\"#0d0887\"],[0.1111111111111111,\"#46039f\"],[0.2222222222222222,\"#7201a8\"],[0.3333333333333333,\"#9c179e\"],[0.4444444444444444,\"#bd3786\"],[0.5555555555555556,\"#d8576b\"],[0.6666666666666666,\"#ed7953\"],[0.7777777777777778,\"#fb9f3a\"],[0.8888888888888888,\"#fdca26\"],[1.0,\"#f0f921\"]],\"type\":\"contour\"}],\"contourcarpet\":[{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"},\"type\":\"contourcarpet\"}],\"heatmap\":[{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"},\"colorscale\":[[0.0,\"#0d0887\"],[0.1111111111111111,\"#46039f\"],[0.2222222222222222,\"#7201a8\"],[0.3333333333333333,\"#9c179e\"],[0.4444444444444444,\"#bd3786\"],[0.5555555555555556,\"#d8576b\"],[0.6666666666666666,\"#ed7953\"],[0.7777777777777778,\"#fb9f3a\"],[0.8888888888888888,\"#fdca26\"],[1.0,\"#f0f921\"]],\"type\":\"heatmap\"}],\"heatmapgl\":[{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"},\"colorscale\":[[0.0,\"#0d0887\"],[0.1111111111111111,\"#46039f\"],[0.2222222222222222,\"#7201a8\"],[0.3333333333333333,\"#9c179e\"],[0.4444444444444444,\"#bd3786\"],[0.5555555555555556,\"#d8576b\"],[0.6666666666666666,\"#ed7953\"],[0.7777777777777778,\"#fb9f3a\"],[0.8888888888888888,\"#fdca26\"],[1.0,\"#f0f921\"]],\"type\":\"heatmapgl\"}],\"histogram\":[{\"marker\":{\"pattern\":{\"fillmode\":\"overlay\",\"size\":10,\"solidity\":0.2}},\"type\":\"histogram\"}],\"histogram2d\":[{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"},\"colorscale\":[[0.0,\"#0d0887\"],[0.1111111111111111,\"#46039f\"],[0.2222222222222222,\"#7201a8\"],[0.3333333333333333,\"#9c179e\"],[0.4444444444444444,\"#bd3786\"],[0.5555555555555556,\"#d8576b\"],[0.6666666666666666,\"#ed7953\"],[0.7777777777777778,\"#fb9f3a\"],[0.8888888888888888,\"#fdca26\"],[1.0,\"#f0f921\"]],\"type\":\"histogram2d\"}],\"histogram2dcontour\":[{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"},\"colorscale\":[[0.0,\"#0d0887\"],[0.1111111111111111,\"#46039f\"],[0.2222222222222222,\"#7201a8\"],[0.3333333333333333,\"#9c179e\"],[0.4444444444444444,\"#bd3786\"],[0.5555555555555556,\"#d8576b\"],[0.6666666666666666,\"#ed7953\"],[0.7777777777777778,\"#fb9f3a\"],[0.8888888888888888,\"#fdca26\"],[1.0,\"#f0f921\"]],\"type\":\"histogram2dcontour\"}],\"mesh3d\":[{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"},\"type\":\"mesh3d\"}],\"parcoords\":[{\"line\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"parcoords\"}],\"pie\":[{\"automargin\":true,\"type\":\"pie\"}],\"scatter\":[{\"marker\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"scatter\"}],\"scatter3d\":[{\"line\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"marker\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"scatter3d\"}],\"scattercarpet\":[{\"marker\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"scattercarpet\"}],\"scattergeo\":[{\"marker\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"scattergeo\"}],\"scattergl\":[{\"marker\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"scattergl\"}],\"scattermapbox\":[{\"marker\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"scattermapbox\"}],\"scatterpolar\":[{\"marker\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"scatterpolar\"}],\"scatterpolargl\":[{\"marker\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"scatterpolargl\"}],\"scatterternary\":[{\"marker\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"type\":\"scatterternary\"}],\"surface\":[{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"},\"colorscale\":[[0.0,\"#0d0887\"],[0.1111111111111111,\"#46039f\"],[0.2222222222222222,\"#7201a8\"],[0.3333333333333333,\"#9c179e\"],[0.4444444444444444,\"#bd3786\"],[0.5555555555555556,\"#d8576b\"],[0.6666666666666666,\"#ed7953\"],[0.7777777777777778,\"#fb9f3a\"],[0.8888888888888888,\"#fdca26\"],[1.0,\"#f0f921\"]],\"type\":\"surface\"}],\"table\":[{\"cells\":{\"fill\":{\"color\":\"#EBF0F8\"},\"line\":{\"color\":\"white\"}},\"header\":{\"fill\":{\"color\":\"#C8D4E3\"},\"line\":{\"color\":\"white\"}},\"type\":\"table\"}]},\"layout\":{\"annotationdefaults\":{\"arrowcolor\":\"#2a3f5f\",\"arrowhead\":0,\"arrowwidth\":1},\"autotypenumbers\":\"strict\",\"coloraxis\":{\"colorbar\":{\"outlinewidth\":0,\"ticks\":\"\"}},\"colorscale\":{\"diverging\":[[0,\"#8e0152\"],[0.1,\"#c51b7d\"],[0.2,\"#de77ae\"],[0.3,\"#f1b6da\"],[0.4,\"#fde0ef\"],[0.5,\"#f7f7f7\"],[0.6,\"#e6f5d0\"],[0.7,\"#b8e186\"],[0.8,\"#7fbc41\"],[0.9,\"#4d9221\"],[1,\"#276419\"]],\"sequential\":[[0.0,\"#0d0887\"],[0.1111111111111111,\"#46039f\"],[0.2222222222222222,\"#7201a8\"],[0.3333333333333333,\"#9c179e\"],[0.4444444444444444,\"#bd3786\"],[0.5555555555555556,\"#d8576b\"],[0.6666666666666666,\"#ed7953\"],[0.7777777777777778,\"#fb9f3a\"],[0.8888888888888888,\"#fdca26\"],[1.0,\"#f0f921\"]],\"sequentialminus\":[[0.0,\"#0d0887\"],[0.1111111111111111,\"#46039f\"],[0.2222222222222222,\"#7201a8\"],[0.3333333333333333,\"#9c179e\"],[0.4444444444444444,\"#bd3786\"],[0.5555555555555556,\"#d8576b\"],[0.6666666666666666,\"#ed7953\"],[0.7777777777777778,\"#fb9f3a\"],[0.8888888888888888,\"#fdca26\"],[1.0,\"#f0f921\"]]},\"colorway\":[\"#636efa\",\"#EF553B\",\"#00cc96\",\"#ab63fa\",\"#FFA15A\",\"#19d3f3\",\"#FF6692\",\"#B6E880\",\"#FF97FF\",\"#FECB52\"],\"font\":{\"color\":\"#2a3f5f\"},\"geo\":{\"bgcolor\":\"white\",\"lakecolor\":\"white\",\"landcolor\":\"#E5ECF6\",\"showlakes\":true,\"showland\":true,\"subunitcolor\":\"white\"},\"hoverlabel\":{\"align\":\"left\"},\"hovermode\":\"closest\",\"mapbox\":{\"style\":\"light\"},\"paper_bgcolor\":\"white\",\"plot_bgcolor\":\"#E5ECF6\",\"polar\":{\"angularaxis\":{\"gridcolor\":\"white\",\"linecolor\":\"white\",\"ticks\":\"\"},\"bgcolor\":\"#E5ECF6\",\"radialaxis\":{\"gridcolor\":\"white\",\"linecolor\":\"white\",\"ticks\":\"\"}},\"scene\":{\"xaxis\":{\"backgroundcolor\":\"#E5ECF6\",\"gridcolor\":\"white\",\"gridwidth\":2,\"linecolor\":\"white\",\"showbackground\":true,\"ticks\":\"\",\"zerolinecolor\":\"white\"},\"yaxis\":{\"backgroundcolor\":\"#E5ECF6\",\"gridcolor\":\"white\",\"gridwidth\":2,\"linecolor\":\"white\",\"showbackground\":true,\"ticks\":\"\",\"zerolinecolor\":\"white\"},\"zaxis\":{\"backgroundcolor\":\"#E5ECF6\",\"gridcolor\":\"white\",\"gridwidth\":2,\"linecolor\":\"white\",\"showbackground\":true,\"ticks\":\"\",\"zerolinecolor\":\"white\"}},\"shapedefaults\":{\"line\":{\"color\":\"#2a3f5f\"}},\"ternary\":{\"aaxis\":{\"gridcolor\":\"white\",\"linecolor\":\"white\",\"ticks\":\"\"},\"baxis\":{\"gridcolor\":\"white\",\"linecolor\":\"white\",\"ticks\":\"\"},\"bgcolor\":\"#E5ECF6\",\"caxis\":{\"gridcolor\":\"white\",\"linecolor\":\"white\",\"ticks\":\"\"}},\"title\":{\"x\":0.05},\"xaxis\":{\"automargin\":true,\"gridcolor\":\"white\",\"linecolor\":\"white\",\"ticks\":\"\",\"title\":{\"standoff\":15},\"zerolinecolor\":\"white\",\"zerolinewidth\":2},\"yaxis\":{\"automargin\":true,\"gridcolor\":\"white\",\"linecolor\":\"white\",\"ticks\":\"\",\"title\":{\"standoff\":15},\"zerolinecolor\":\"white\",\"zerolinewidth\":2}}},\"xaxis\":{\"anchor\":\"y\",\"domain\":[0.0,1.0],\"title\":{\"text\":\"date\"}},\"yaxis\":{\"anchor\":\"x\",\"domain\":[0.0,1.0],\"title\":{\"text\":\"value\"}},\"legend\":{\"title\":{\"text\":\"variable\"},\"tracegroupgap\":0},\"margin\":{\"t\":60}},                        {\"responsive\": true}                    ).then(function(){\n",
+              "                            \n",
+              "var gd = document.getElementById('292ae121-1865-455c-a09f-190ce2a8581e');\n",
+              "var x = new MutationObserver(function (mutations, observer) {{\n",
+              "        var display = window.getComputedStyle(gd).display;\n",
+              "        if (!display || display === 'none') {{\n",
+              "            console.log([gd, 'removed!']);\n",
+              "            Plotly.purge(gd);\n",
+              "            observer.disconnect();\n",
+              "        }}\n",
+              "}});\n",
+              "\n",
+              "// Listen for the removal of the full notebook cells\n",
+              "var notebookContainer = gd.closest('#notebook-container');\n",
+              "if (notebookContainer) {{\n",
+              "    x.observe(notebookContainer, {childList: true});\n",
+              "}}\n",
+              "\n",
+              "// Listen for the clearing of the current output cell\n",
+              "var outputEl = gd.closest('.output');\n",
+              "if (outputEl) {{\n",
+              "    x.observe(outputEl, {childList: true});\n",
+              "}}\n",
+              "\n",
+              "                        })                };                            </script>        </div>\n",
+              "</body>\n",
+              "</html>"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "5Lczd22Pkhjt"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "GuwssOQpg4hT"
+      },
+      "execution_count": 97,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "theK3GN4iWNL"
+      },
+      "execution_count": 55,
+      "outputs": []
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+
+########################################################################
+#      Date:           Wed 28 Dec 2022 11:04:45 AM PST
+#    Job ID:           2108471.v-qsvr-1.aidevcloud
+#      User:           u170690
+# Resources:           cput=75:00:00,neednodes=1:ppn=2,nodes=1:ppn=2,walltime=24:00:00
+########################################################################
+
+ 
+:: initializing oneAPI environment ...
+   2108471.v-qsvr-1.aidevcloud.SC: BASH_VERSION = 5.0.17(1)-release
+   args: Using "$@" for setvars.sh arguments: 
+:: advisor -- latest
+:: ccl -- latest
+:: clck -- latest
+:: compiler -- latest
+:: dal -- latest
+:: debugger -- latest
+:: dev-utilities -- latest
+:: dnnl -- latest
+:: dpcpp-ct -- latest
+:: dpl -- latest
+:: embree -- latest
+:: inspector -- latest
+:: intelpython -- latest
+:: ipp -- latest
+:: ippcp -- latest
+:: ipp -- latest
+:: ispc -- latest
+:: itac -- latest
+:: mkl -- latest
+:: modelzoo -- latest
+:: modin -- latest
+:: mpi -- latest
+:: neural-compressor -- latest
+:: oidn -- latest
+:: openvkl -- latest
+:: ospray -- latest
+:: ospray_studio -- latest
+:: pytorch -- latest
+:: rkcommon -- latest
+:: rkutil -- latest
+:: tbb -- latest
+:: tensorflow -- latest
+:: vpl -- latest
+:: vtune -- latest
+:: oneAPI environment initialized ::
+ 
+
+########################################################################
+# End of output for job 2108471.v-qsvr-1.aidevcloud
+# Date: Wed 28 Dec 2022 01:47:06 PM PST
+########################################################################
+

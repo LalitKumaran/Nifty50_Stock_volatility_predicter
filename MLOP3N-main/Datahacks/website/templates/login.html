@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width+device-width, initial-scale-1.0">
+        <link rel="stylesheet" href="style.css"/>
+        <title>STOCKS</title>
+        <style>
+          
+@import url('https://fonts.googleapis.com/css2?family=Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
+* {
+    margin: 0;
+    padding:0;
+    box-sizing:content-box;
+    font-family: 'Spartan', sans-serif;
+}
+h1{
+    color: #222;
+}
+body{
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background: #fff;;
+}
+
+#header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 80px;
+    background: #E3E6F3;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+#navbar{
+    font-family:Arial, Helvetica, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#navbar li{
+    list-style: none;
+    padding: 0 20px;
+    position: relative;
+}
+
+#navbar li a{
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    transition: 0.3s ease;
+}
+
+#navbar li a:hover,
+#navbar li a.active{
+    color: #088178;
+}
+
+#navbar li a.active {
+width: 305; 
+height:2px;
+}
+
+#navbar li a.active::after,
+#navbar li a:hover::after{
+    content:"";
+    width:35%;
+    height: 2px;
+    background: #088178;
+    position: absolute;
+    bottom: -4px;
+    left: 20px;
+}
+
+#chartspace{
+    background: #E3E6F3;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:30px 25px 30px;
+    margin: 20px 10%;
+   
+}
+
+#card{
+    display:grid;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    justify-items: center;
+    margin:20px 10%;
+    padding: 30px 30px 100px;
+    border-radius: 5px;    
+}
+
+#card li{
+    display:list-item;
+    list-style: none;
+    padding: 0 20px;
+    position: relative;
+}
+
+.container{
+    display: grid;
+    background: #fff;
+    max-width: 350px;
+    width: 100%;
+    padding: 25px 30px;
+    border-radius: 5px;
+    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.15);
+    margin: 5% 35%;
+  }
+  .container form .title{
+    font-size: 30px;
+    font-weight: 600;
+    margin: 20px 0 10px 0;
+    position: relative;
+  }
+  
+  .container form .input-box{
+    width: 100%;
+    height: 45px;
+    margin-top: 25px;
+    position: relative;
+  }
+  .container form .input-box input{
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-size: 16px;
+    border: none;
+  }
+  .container form .underline::before{
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: #ccc;
+    left: 0;
+    bottom: 0;
+  }
+  .container form .underline::after{
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(to right, turquoise 0%, white 100%);
+    left: 0;
+    bottom: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: all 0.3s ease;
+  }
+  .container form .input-box input:focus ~ .underline::after,
+  .container form .input-box input:valid ~ .underline::after{
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .container form .button{
+    margin: 40px 0 20px 0;
+  }
+  .container .input-box input[type="submit"]{
+    background: turquoise;
+    font-size: 17px;
+    color:black;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .col{
+    column-count: 2;
+  }
+
+  .search .input-box{
+    width: 80%;
+    height: 45px;
+    margin: 10px 85px;
+    position: relative;
+    
+  }
+  .search .input-box input{
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-size: 16px;
+    border: none;
+    
+  }
+  .search .underline::before{
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: #ccc;
+    left: 0;
+    bottom: 0;
+  }
+  .search .underline::after{
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(to right, #088178 0%, #E3E6F3 100%);
+    left: 0;
+    bottom: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: all 0.3s ease;
+  }
+  .search .input-box input:focus ~ .underline::after,
+  .search .input-box input:valid ~ .underline::after{
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+        </style>
+    </head>
+<body>
+    <section id="header">
+        <h1>$tocks</h1>
+        <a href="#"><img src="img\logo.jpg" class="logo" alt=""></a>
+        
+        <div>
+            <ul id="navbar">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a class="active" href="/login">Login</a></li>
+                <li><a href="/signup">Signup</a></li>
+            </ul>
+        </div>
+        </section>
+    <div class="container" style="display:grid">
+      <form method="POST">
+        <div class="title">Login</div>
+        <div class="input-box underline">
+            <input type="text" id="email" name="email" placeholder="Enter Your Email" required>
+            <div class="underline"></div>
+        </div>
+        <div class="input-box">
+          <input type="password" id="password1" name="password1" placeholder="Enter Your Password" required>
+          <div class="underline"></div>
+        </div>
+        <div class="input-box button">
+          <input type="submit" name="" value="Login">
+        </div>
+        <a href="signup.html">SignUp</a>
+      </form>
+    </div>
+  </body>
+</html>

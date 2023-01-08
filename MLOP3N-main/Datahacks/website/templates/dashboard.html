@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width+device-width, initial-scale-1.0">
+        <title>STOCKS</title>
+        <link rel="stylesheet" href="style.css" type=¨text/css¨/>
+        <style>
+          
+          @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
+          * {
+              margin: 0;
+              padding:0;
+              box-sizing:content-box;
+              font-family: 'Spartan', sans-serif;
+          }
+          h1{
+              color: #222;
+          }
+          body{
+              justify-content: center;
+              align-items: center;
+              min-height: 100vh;
+              width: 100%;
+              background: #fff;;
+          }
+          
+          #header{
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 20px 80px;
+              background: #E3E6F3;
+              box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+          }
+          
+          #navbar{
+              font-family:Arial, Helvetica, sans-serif;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+          }
+          
+          #navbar li{
+              list-style: none;
+              padding: 0 20px;
+              position: relative;
+          }
+          
+          #navbar li a{
+              text-decoration: none;
+              font-size: 16px;
+              font-weight: 600;
+              color: #222;
+              transition: 0.3s ease;
+          }
+          
+          #navbar li a:hover,
+          #navbar li a.active{
+              color: #088178;
+          }
+          
+          #navbar li a.active {
+          width: 305; 
+          height:2px;
+          }
+          
+          #navbar li a.active::after,
+          #navbar li a:hover::after{
+              content:"";
+              width:35%;
+              height: 2px;
+              background: #088178;
+              position: absolute;
+              bottom: -4px;
+              left: 20px;
+          }
+          
+          #chartspace{
+              background: #E3E6F3;
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.40);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding:30px 25px 30px;
+              margin: 30px 75px;
+              width:70%;
+              border-radius: 5px; 
+          }
+          
+          #card{
+              display:grid;
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.40);
+              margin: 0px 0px 25px 0px;
+              padding: 40px 35px 30px;
+              border-radius: 5px;  
+              align-items: center;
+              width: 70%;
+              float:left;
+              height: 100%;
+             
+          }
+          
+          
+
+          #card td{
+            height: 10px;
+            padding: 5px 5px 5px;
+          }
+
+          #card1{
+              display: grid;
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.40);
+              justify-items: center;
+              margin: 0px 0px 15px -130px;
+              padding: 30px 10px 20px;
+              border-radius: 5px;
+              width: 70%;
+              float:left;
+              height:100%;
+              
+          }
+
+          #card h4{
+            text-align: center;
+          }
+          
+          #card li{
+              position:relative;
+              align-items: center;
+              display:grid;
+              list-style: none;
+              
+          }
+
+            .topstock {
+              height: 640px;
+              width: 350px;
+              position: absolute;
+              z-index: 1;
+              top:210px;
+              right: 20px;
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.40);
+              border-radius: 5px;
+              overflow-x: hidden;
+              scroll-snap-type: none;
+              padding-top: 20px;
+            }
+
+            .topstock a {
+              padding: 6px 8px 6px 100px;
+              text-decoration: none;
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+              color: #000;
+              display: block;
+              justify-content: space-between;
+            }
+            
+            .topstock a {
+              width:160px;list-style: none;padding: 30px 55px 30px 55px;margin-left:30px              
+            }
+
+            .main {
+              margin-left: 0px; /* Same as the width of the sidenav */
+              margin-right: 70px;
+              /* Increased text to enable scrolling */
+              padding: 0px 10px;
+            }
+
+            @media screen and (max-height: 450px) {
+              .sidenav {padding-top: 15px;}
+              .sidenav a {font-size: 10px;}
+            }
+
+          .N50{
+            display:grid;
+              box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.40);
+              margin: 20px 20px 0px 0px;
+              padding: 20px 0px 10px 0px;
+              border-radius: 5px; 
+              text-align: center;
+              align-items: center;
+              width: 350px;
+              float:right;
+              top: 0;
+          }
+
+        
+          #nifty50 a{
+            text-align: center;
+            align-items: center;
+          width:80%;
+          margin-bottom: 5px;
+          padding: 10px 10px 10px 0px;
+          justify-content: space-between;
+        }
+          #nifty50 a:hover
+          {
+            color:#088178;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.40);
+          }
+          
+          .container{
+              display: grid;
+              background: #fff;
+              max-width: 350px;
+              width: 100%;
+              padding: 25px 30px;
+              border-radius: 5px;
+              box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.15);
+              margin: 5% 35%;
+            }
+            .container form .title{
+              font-size: 30px;
+              font-weight: 600;
+              margin: 20px 0 10px 0;
+              position: relative;
+            }
+            
+            .container form .input-box{
+              width: 100%;
+              height: 45px;
+              margin-top: 25px;
+              position: relative;
+            }
+            .container form .input-box input{
+              width: 100%;
+              height: 100%;
+              outline: none;
+              font-size: 16px;
+              border: none;
+            }
+            .container form .underline::before{
+              content: '';
+              position: absolute;
+              height: 2px;
+              width: 100%;
+              background: #ccc;
+              left: 0;
+              bottom: 0;
+            }
+            .container form .underline::after{
+              content: '';
+              position: absolute;
+              height: 2px;
+              width: 100%;
+              background: linear-gradient(to right, turquoise 0%, white 100%);
+              left: 0;
+              bottom: 0;
+              transform: scaleX(0);
+              transform-origin: left;
+              transition: all 0.3s ease;
+            }
+            .container form .input-box input:focus ~ .underline::after,
+            .container form .input-box input:valid ~ .underline::after{
+              transform: scaleX(1);
+              transform-origin: left;
+            }
+            .container form .button{
+              margin: 40px 0 20px 0;
+            }
+            .container .input-box input[type="submit"]{
+              background: turquoise;
+              font-size: 17px;
+              color:black;
+              border-radius: 5px;
+              cursor: pointer;
+              transition: all 0.3s ease;
+            }
+          
+            .col{
+              column-count: 2;
+              column-gap: 0px;
+              margin-left: 75px;
+              column-span: 2/1;
+            }
+
+            .col3{
+              column-count: 3;
+              column-gap: 20px;
+              
+            }
+          
+            .search .input-box{
+              width: 80%;
+              height: 45px;
+              margin: 10px 85px;
+              position: relative;
+              
+            }
+            .search .input-box input{
+              width: 100%;
+              height: 100%;
+              outline: none;
+              font-size: 16px;
+              border: none;
+              
+            }
+            .search .underline::before{
+              content: '';
+              position: absolute;
+              height: 2px;
+              width: 100%;
+              background: #ccc;
+              left: 0;
+              bottom: 0;
+            }
+            .search .underline::after{
+              content: '';
+              position: absolute;
+              height: 2px;
+              width: 100%;
+              background: linear-gradient(to right, #088178 0%, #E3E6F3 100%);
+              left: 0;
+              bottom: 0;
+              transform: scaleX(0);
+              transform-origin: left;
+              transition: all 0.3s ease;
+            }
+            .search .input-box input:focus ~ .underline::after,
+            .search .input-box input:valid ~ .underline::after{
+              transform: scaleX(1);
+              transform-origin: left;
+            }
+
+            .footer{
+              background-color: #E3E6F3;
+              height: 50px;
+              margin-top: 100px;
+              width: 96%;
+              box-shadow: 10px 0px 0px rgba(0, 0, 0, 0.20);
+              text-align: center;
+              padding: 30px;
+            }
+                  </style>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+<script type="text/javascript">
+window.onload = function () {
+  var dataPoints = [];
+  
+  var stockChart = new CanvasJS.StockChart("chartContainer",{
+    title: {
+        text: "CODE"
+      },
+    charts: [{      
+      data: [{        
+        type: "area", //Change it to "spline", "area", "column"
+        dataPoints : dataPoints
+      }]
+    }],
+    navigator: {
+      slider: {
+        minimum: new Date(2018, 08, 01),
+        maximum: new Date(2018, 10, 01)
+      }
+    }
+  }); 
+
+  $.getJSON("https://canvasjs.com/data/docs/ethusd2018.json", function(data) {  
+    for(var i = 0; i < data.length; i++){
+      dataPoints.push({x: new Date(data[i].date), y: Number(data[i].close)});
+    }
+	
+    stockChart.render();
+  });
+}
+</script>
+    </head>
+    <body>
+        <section id="header">
+        <h1>$tocks</h1>
+        <a href="dashboard.html"><img src="img\logo.jpg" class="logo" alt=""></a>
+        
+        <div>
+            <ul id="navbar">
+                <li></li>
+                <li><a class="active" href="dashboard.html">Dashboard</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/signup">Signup</a></li>
+            </ul>
+        </div>
+        </section>
+        <div class="search">
+            <div class="input-box underline">
+            <input type="text" name="search" placeholder="Search stock">
+            <div class="underline"></div>
+            </div>
+            <section class="N50">
+              <h4>TOP 50</h4>
+          </section>
+            <div class="topstock">
+              <script src="https://www.w3schools.com/lib/w3.js"></script>
+              <div id="nifty50"><a href="#" w3-repeat="x in stname">{{x}}</a><hr></div>
+              <script>
+                w3.displayObject("nifty50", {"stname" : ["ACC","ADANIENT","ADANIGREEN","ADANIPORTS","AMBUJACEM","APOLLOHOSP","ASIANPAINT","AUROPHARMA","AXISBANK","BAJAJ-AUTO","BAJAJFINSV","BAJAJHLDNG","BAJFINANCE","BANDHANBNK","BANKBARODA","BERGEPAINT","BHARTIARTL","BIOCON","BOSCHLTD","BPCL","BRITANNIA","CHOLAFIN","CIPLA","COALINDIA","COLPAL","DABUR","DIVISLAB","DLF","DMART","DRREDDY","EICHERMOT","GAIL","GLAND","GODREJCP","GRASIM","HAVELLS","HCLTECH","HDFCAMC","HDFCBANK","HDFCLIFE","HDFC","HEROMOTOCO","HINDALCO","HINDPETRO","HINDUNILVR","ICICIBANK","ICICIGI","ICICIPRULI","IGL","INDIGO","INDUSINDBK","INDUSTOWER","INFY","IOC","ITC","JINDALSTEL","JSWSTEEL","JUBLFOOD","KOTAKBANK","LICI","LTI","LT","LUPIN","MARICO","MARUTI","MCDOWELL-N","MM","MUTHOOTFIN","NAUKRI","NESTLEIND","NIFTY 50","NIFTY BANK","NMDC","NTPC","ONGC","PEL","PGHH","PIDILITIND","PIIND","PNB","POWERGRID","RELIANCE","SAIL","SBICARD","SBILIFE","SBIN","SHREECEM","SIEMENS","SUNPHARMA","TATACONSUM","TATAMOTORS","TATASTEEL","TCS","TECHM","TITAN","TORNTPHARM","ULTRACEMCO","UPL","VEDL","WIPRO","YESBANK"]});
+                </script>
+                
+             
+             
+            </div>
+        <div class="main">
+        <section id="chartspace">
+            <div id="chartContainer" style="justify-content:center;height: 400px; width: 100%;"></div>
+        </section><br>
+    <div class="col">
+      <section id="card">
+        <h4>STOCK NAME</h4><br>
+        <div class="col">
+          <table >
+          <tr><td>Open</td> <td>$</td></tr>
+          <tr><td>High</td> <td>$</td></tr>
+          <tr><td>Date</td> <td>DD/MM/YYYY</td></tr>
+          <tr><td>Close</td> <td>$</td></tr>
+          <tr><td>Low</td> <td>$</td></tr>
+          <tr><td>Time</td><td>HH:MM</td></tr>
+        </table></div>
+        </section>
+      
+      <section id="card1" >
+      <h4>STOCK PREDICTIONS</h4><br>
+      <div>
+          <ul> 
+              <li>LOWEST: $X</li>
+              <li>HIGHEST: $Y</li>
+          </ul>
+      </div><br>
+      <h4>PROFIT</h4><br>
+          <div>
+              <ul> 
+                  <li>PROFIT: $Y-X</li>
+              </ul>
+              </div>
+     </section>
+    </div>
+    </div>
+  </div> 
+  <div class="footer">DATAHACKS 2.O - MLOP3N<br>PARADOX'22</div>
+    </body>
+</html>
